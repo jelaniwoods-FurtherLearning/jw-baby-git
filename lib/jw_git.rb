@@ -58,5 +58,13 @@ module JwGit
       Git::Stash.new(g, "Stash #{stash_count}")
       redirect to("/status")
     end
+    
+    post "/checkout" do
+      working_dir = File.exist?(Dir.pwd + "/.git") ? Dir.pwd : Dir.pwd + "/.."
+      g = Git.open(working_dir)
+      name = params[:branch_name]
+      g.branch(name).checkout
+      redirect to("/status")
+    end
   end
 end
