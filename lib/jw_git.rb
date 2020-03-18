@@ -21,14 +21,12 @@ module JwGit
     end
     
     get "/status" do
-      working_dir = Dir.pwd
+      working_dir = File.exist?(Dir.pwd + "/.git") ? Dir.pwd : Dir.pwd + "/.."
       g = Git.open(working_dir)
       g.config('user.name')
       changed_files = g.status.changed
       untracked_files = g.status.untracked
-      puts "\n" * 5
-      # puts g.status.pretty
-      puts "\n" * 5
+      # TODO shelling out status is different than g.status
       @status = `git status`
       # @wild = g.status.pretty
       @wild = ""
@@ -36,6 +34,7 @@ module JwGit
       @diff = g.diff
       @diff = Diff.diff_to_html(g.diff.to_s)
     
+      @branches = g.branches.map(&:full)
       erb :status
     end
     
@@ -44,12 +43,20 @@ module JwGit
       description = params[:description]
       p title
       puts "------"
-      working_dir = Dir.pwd
+      working_dir = File.exist?(Dir.pwd + "/.git") ? Dir.pwd : Dir.pwd + "/.."
       g = Git.open(working_dir)
-      g.add(:all=>true)  
+      g.add(:all => true)  
       g.commit(title)
       redirect to("/status")
     end
     
+    get "/stash" do
+      working_dir = File.exist?(Dir.pwd + "/.git") ? Dir.pwd : Dir.pwd + "/.."
+      g = Git.open(working_dir)
+      g.add(:all=>true)
+      stash_count = Git::Stashes.new(g).count
+      Git::Stash.new(g, "Stash #{stash_count}")
+      redirect to("/status")
+    end
   end
 end

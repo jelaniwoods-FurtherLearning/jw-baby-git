@@ -72,7 +72,9 @@
                 <div class="col">
                   <div class="card">
                     <div class="card-header h6">
-                      Discard your changes
+                      <a href="/stash">
+                        Discard your changes
+                      </a>
                     </div>
 
                     <div class="card-body">
@@ -113,11 +115,20 @@
                 </li>
 
                 <li class="list-group-item">
+                  <form action="/checkout" method="post">
+                    <input type="text" name="branch_name">
+                    <button>
                       Create branch
+                    </button>
+                  </form>
                 </li>
 
                 <li class="list-group-item list-group-item-info">
                   Existing branches
+                  <% @branches.each do |branch| %>
+                    <%= branch %>
+                    <br>
+                  <% end %>
                 </li>
               </ul>
             </div>
