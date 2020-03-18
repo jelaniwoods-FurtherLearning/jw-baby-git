@@ -6,7 +6,7 @@ Test gem to attempt to use a Sinatra app alongside a Rails app.
 Add this line to your application's Gemfile:
 
 ```ruby
-gem "jw_git", github: "jelaniwoods-FurtherLearning/jw-baby-git"
+gem "jw_git", github: "jelaniwoods-FurtherLearning/jw_git"
 ```
 
 And then execute:
