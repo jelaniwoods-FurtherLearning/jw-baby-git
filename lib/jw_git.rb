@@ -1,10 +1,11 @@
+
 require "jw_git/version"
-require "jw_git/diff"
-require "jw_git/string"
-require 'sinatra'
-require 'git'
 
 module JwGit
+  require "jw_git/diff"
+  require "jw_git/string"
+  require 'sinatra'
+  require 'git'
   class Server < Sinatra::Base
     get '/' do
       working_dir = File.exist?(Dir.pwd + "/.git") ? Dir.pwd : Dir.pwd + "/.."
