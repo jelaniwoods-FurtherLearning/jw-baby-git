@@ -4,8 +4,8 @@ require "jw_git/string"
 require 'sinatra'
 require 'git'
 
-module Server
-  class JwGit < Sinatra::Base
+module JwGit
+  class Server < Sinatra::Base
     get '/' do
       working_dir = File.exist?(Dir.pwd + "/.git") ? Dir.pwd : Dir.pwd + "/.."
       g = Git.open(working_dir)
