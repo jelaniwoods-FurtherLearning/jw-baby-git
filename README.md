@@ -1,15 +1,12 @@
 # JwGit
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/jw_git`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
-
+Test gem to attempt to use a Sinatra app alongside a Rails app.
 ## Installation
 
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'jw_git'
+gem "jw_git", github: "jelaniwoods-FurtherLearning/jw-baby-git"
 ```
 
 And then execute:
@@ -22,7 +19,22 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+In your Rails app
+
+```ruby
+# config.ru
+# This file is used by Rack-based servers to start the application.
+
+require_relative 'config/environment'
+
+map '/git' do
+  run JwGit::Server
+end
+
+map '/' do
+  run Rails.application
+end
+```
 
 ## Development
 
