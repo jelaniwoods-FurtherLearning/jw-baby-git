@@ -26,7 +26,7 @@ module JwGit
       changed_files = g.status.changed
       untracked_files = g.status.untracked
       puts "\n" * 5
-      puts g.status.pretty
+      # puts g.status.pretty
       puts "\n" * 5
       @status = `git status`
       # @wild = g.status.pretty
