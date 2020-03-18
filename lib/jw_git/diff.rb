@@ -1,10 +1,10 @@
-module WebGit
+
   require "diffy"
   class Diff
 
     def initialize
       working_dir = Dir.pwd
-      @git = Git.open(working_dir, :log => Logger.new(STDOUT))  
+      @git = Git.open(working_dir)  
     end
 
     def self.get_diff
@@ -237,5 +237,3 @@ module WebGit
 
     end
   end
-end
-
