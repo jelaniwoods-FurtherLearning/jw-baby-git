@@ -1,5 +1,5 @@
 <%= @wild %>
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css">
 <div class="row mb-4">
   <div class="col">
     <div class="card">
@@ -128,9 +128,9 @@
                   Existing branches
                 <% @branches.each do |branch| %>
                   <div class="btn-group">
-                    <a href="/checkout" class="btn btn-primary btn-sm"> <span><i class="fad fa-repeat"></i></span>  <%= branch %></a>
+                    <a href="/git/checkout" class="btn btn-primary btn-sm"> <span><i class="fad fa-repeat"></i></span>  <%= branch %></a>
 
-                    <a href="/delete" class="btn btn-warning btn-sm"> <span><i class="far fa-trash-alt"></i></span> <%= branch %></a>
+                    <a href="/git/delete" class="btn btn-warning btn-sm"> <span><i class="far fa-trash-alt"></i></span> <%= branch %></a>
                   </div>
                 <% end %>
                 </li>
