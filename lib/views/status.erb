@@ -1,4 +1,5 @@
 <%= @wild %>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 <div class="row mb-4">
   <div class="col">
     <div class="card">
@@ -123,12 +124,15 @@
                   </form>
                 </li>
 
-                <li class="list-group-item list-group-item-info">
+                <li class="list-group-item list-group-item-info justify-content-between">
                   Existing branches
-                  <% @branches.each do |branch| %>
-                    <%= branch %>
-                    <br>
-                  <% end %>
+                <% @branches.each do |branch| %>
+                  <div class="btn-group">
+                    <a href="/checkout" class="btn btn-primary btn-sm"> <span><i class="fad fa-repeat"></i></span>  <%= branch %></a>
+
+                    <a href="/delete" class="btn btn-warning btn-sm"> <span><i class="far fa-trash-alt"></i></span> <%= branch %></a>
+                  </div>
+                <% end %>
                 </li>
               </ul>
             </div>
