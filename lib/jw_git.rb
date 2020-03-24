@@ -21,8 +21,8 @@ module JwGit
         # commit.date.strftime("%a, %d %b %Y, %H:%M %z") + " " + commit.message
         sha = commit.sha.slice(0..7)
         commit_date = Date.parse commit.date
-        line = " * " + sha + " - " + commit_date + " (" + time_ago_in_words(commit_date)
-         + ") " + "\n\t| " + commit.message 
+        line = " * " + sha + " - " + commit_date +
+         " (#{time_ago_in_words(commit_date)}) " + "\n\t| " + commit.message 
         list.push line
       end
       list.join("<br>")
@@ -56,8 +56,8 @@ module JwGit
       logs.each do |commit|
         sha = commit.sha.slice(0..7)
         commit_date = Date.parse commit.date
-        line = " * " + sha + " - " + commit_date + " (" + time_ago_in_words(commit_date)
-         + ") " + "\n\t| " + commit.message 
+        line = " * " + sha + " - " + commit_date
+         + " (#{time_ago_in_words(commit_date)}) " + "\n\t| " + commit.message 
         list.push line
       end
       erb :status
