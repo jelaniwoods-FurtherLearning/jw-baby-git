@@ -11,7 +11,7 @@ module JwGit
     require 'action_view'
     require 'action_view/helpers'
     include ActionView::Helpers::DateHelper
-    
+
     get '/' do
       working_dir = File.exist?(Dir.pwd + "/.git") ? Dir.pwd : Dir.pwd + "/.."
       g = Git.open(working_dir)
@@ -59,7 +59,7 @@ module JwGit
         commit_date = commit.date
         line = " * " + sha + " - " + commit.date.strftime("%a, %d %b %Y, %H:%M %z") +
          " (#{time_ago_in_words(commit_date)}) " + "\n\t| " + commit.message 
-        list.push line
+        @list.push line
       end
       erb :status
     end
