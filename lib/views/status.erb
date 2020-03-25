@@ -163,7 +163,11 @@
       <h2 class="card-header">
         History
       </h2>
-
+      <% @list.each do |commit| %>
+        <% commit_parts = commit.split "\n" %>
+        <%= commit_parts.first %>
+        <%= commit_parts.last.gsub("\t", "&emsp;") %>
+      <% end %>
     </div>
   </div>
 </div>
