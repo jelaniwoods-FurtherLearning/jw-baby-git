@@ -10,11 +10,49 @@
     .commit:hover {
       color: red;
     }
+    
+    .tooltip {
+      position: relative;
+      display: inline-block;
+    }
+
+    .tooltip .tooltiptext {
+      visibility: hidden;
+      width: 140px;
+      background-color: #555;
+      color: #fff;
+      text-align: center;
+      border-radius: 6px;
+      padding: 5px;
+      position: absolute;
+      z-index: 1;
+      bottom: 150%;
+      left: 50%;
+      margin-left: -75px;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .tooltip .tooltiptext::after {
+      content: "";
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      margin-left: -5px;
+      border-width: 5px;
+      border-style: solid;
+      border-color: #555 transparent transparent transparent;
+    }
+
+    .tooltip:hover .tooltiptext {
+      visibility: visible;
+      opacity: 1;
+    }
   </style>
   <title>Git Client</title>
 </head>
 <body>
-  <div class="container">
+  <div class="container mt-3">
     <div class="row mb-4">
       <div class="col">
         <div class="card">
@@ -34,8 +72,6 @@
               </p>
               <% @statuses.each do |status| %>
                 <% filelist = status[:file_list].join("\n") %>
-                <% puts filelist %>
-                <% p filelist %>
                 <% if filelist.length > 0 %>
                   <%= status[:name] %>
                   <pre><%= filelist.strip %></pre>
@@ -175,13 +211,22 @@
           <h2 class="card-header">
             History
           </h2>
+          <div class="tooltip">
+            <div class="tooltiptext">
+            </div>
+          </div>
           <code class="bg-dark text-white p-3">
             <% @list.each do |commit| %>
               <% commit_parts = commit.split "\n" %>
               <div>
                 <div>
                   <span class="commit">
-                    <%= commit_parts.first %>
+                    <% first_line = commit_parts.first %>
+                    <% sha = first_line.split[1] %>
+                    <% copy_sha = '<button class="btn btn-link" id="' + sha + '" onclick="copyToClipboard(' + "'#{sha}'" + ')">' + sha + '</button>' %>
+                    <%= first_line.gsub(sha, copy_sha) %>
+                    <input type="hidden" class="hidden <%= sha %>" value="<%= sha %>">
+                    <!-- * cb351409 - Thu, 19 Mar 2020, 23:59 -0500 (6 days) -->
                   </span>
                 </div>
                 <%= commit_parts.last.gsub("\t", "&emsp;") %>
@@ -192,5 +237,27 @@
       </div>
     </div>
   </div>
+  <script>
+  function copyToClipboard(id) {
+  /* Get the text field */
+    var copyText = document.querySelector("input." + id)
+    
+    console.log(copyText)
+    // .textContent
+    /* Select the text field */
+    copyText.select();
+    // copyText.setSelectionRange(0, 99999); /*For mobile devices*/
+
+    /* Copy the text inside the text field */
+    // copyText.value = id
+    console.log("||||||")
+    console.log(copyText.value)
+    document.execCommand("copy");
+    var tooltip = document.getElementsByClassName("tooltiptext")[0];
+    tooltip.innerHTML = "Copied: " + id;
+    /* Alert the copied text */
+    // alert("Copied the text: " + copyText.textContent);
+  }
+  </script>
 </body>
 </html>
