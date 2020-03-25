@@ -1,173 +1,196 @@
-<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css">
-<div class="row mb-4">
-  <div class="col">
-    <div class="card">
-      <h1 class="card-header">
-        <% if !@diff.nil? %>
-          On branch <code><%= @current_branch %></code>
-        <% else %>
-          <code>git status</code>
-        <% end %>
-      </h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-      <div class="card-body">
-        <%# if false %>
-        <% unless @status.include?("nothing to commit, working tree clean") %>
-          <p class="h4 mb-3 text-center">
-            You have changes
-          </p>
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <style>
+    .commit:hover {
+      color: red;
+    }
+  </style>
+  <title>Git Client</title>
+</head>
+<body>
+  <div class="container">
+    <div class="row mb-4">
+      <div class="col">
+        <div class="card">
+          <h1 class="card-header">
+            <% if !@diff.nil? %>
+              On branch <code><%= @current_branch %></code>
+            <% else %>
+              <code>git status</code>
+            <% end %>
+          </h1>
 
-          <% if @status.include?("Untracked files") %>
-            <pre>
-              <%#= simple_format @status.
-                    gsub("(use \"git add <file>...\" to include in what will be committed)\n\n", "").
-                    gsub("(use \"git add\" to track)\n", "")%>
-              <%= @status %>...
-            </pre>
-          <% end %>
+          <div class="card-body">
+            <%# if false %>
+            <% unless @status.include?("nothing to commit, working tree clean") %>
+              <p class="h4 mb-3 text-center">
+                You have changes
+              </p>
+              <% @statuses.each do |status| %>
+                <% filelist = status[:file_list].join("\n") %>
+                <% puts filelist %>
+                <% p filelist %>
+                <% if filelist.length > 0 %>
+                  <%= status[:name] %>
+                  <pre><%= filelist.strip %></pre>
+                <% end %>
+              <% end %>
 
-          <% if !@diff.nil? %>
-            <%= @diff %>
-          <% end %>
+              <% if !@diff.nil? %>
+                <%= @diff %>
+              <% end %>
 
-          <p class="h4 mb-3 text-center">
-            What do you want to do?
-          </p>
-
-          <div class="row">
-            <div class="col">
-              <div class="card">
-                <div class="card-header h6">
-                  Commit your changes to the current branch
-                </div>
-
-                <div class="card-body">
-                  <form action="/git/commit" method="post">
-                    <div class="form-group">
-                      <label for="title">Title</label>
-                      <input type="text" name="title">
-                    </div>
-                    <button>Commit</button>
-                  </form>
-                </div>
-              </div>
-            </div>
-
-            <div class="col">
-              <div class="row mb-2">
-                <div class="col">
-                  <div class="card">
-                    <div class="card-header h6">
-                      Switch to a new branch
-                    </div>
-
-                    <div class="card-body">
-                      Create a new branch
-                      <form action="" class="full-width mb-2">
-                        <div class="form-group">
-                          <label for="new_branch_name" class="sr-only">Branch name</label>
-                          <input type="text" name="new_branch_name" id="new_branch_name" class="form-control" placeholder="Enter a name for the branch to create...">
-                        </div>
-                      
-                      </form>
-                    <%= form_tag branch_url, class: "full-width mb-2" do %>
-                      <%= button_tag class: "btn btn-success btn-block", data: { toggle: "tooltip", html: true }, title: "<code>git checkout -b [NEW BRANCH NAME]</code>" do %>
-
-                        <%= octicon "git-branch", class: "mr-1" %>
-
-                        Create a new branch
-                      <% end %>
-                    <% end %>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              <p class="h4 my-3 text-center">
+                What do you want to do?
+              </p>
 
               <div class="row">
                 <div class="col">
                   <div class="card">
                     <div class="card-header h6">
-                      <a href="/git/stash">
-                        Discard your changes
-                      </a>
+                      Commit your changes to the current branch
                     </div>
 
                     <div class="card-body">
-                        Discard all changes
+                      <form action="/git/commit" method="post">
+                        <div class="form-group">
+                          <label for="title">Title</label>
+                          <input type="text" name="title">
+                        </div>
+                        <button>Commit</button>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col">
+                  <div class="row mb-2">
+                    <div class="col">
+                      <div class="card">
+                        <div class="card-header h6">
+                          Switch to a new branch
+                        </div>
+
+                        <div class="card-body">
+                          <form action="" class="full-width mb-2">
+                            <div class="form-group">
+                              <label for="new_branch_name" class="sr-only">Branch name</label>
+                              <input type="text" name="new_branch_name" id="new_branch_name" class="form-control" placeholder="Enter a name for the branch to create...">
+                            
+                            </div>
+                            <button class="btn btn-success btn-block">
+                              <%# octicon "git-branch", class: "mr-1" %>
+                              <i class="fas fa-code-branch"></i>
+                              Create a new branch
+                            </button>
+                          </form>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col">
+                      <div class="card">
+                        <div class="card-header h6">
+                          <a href="/git/stash">
+                            Discard your changes
+                          </a>
+                        </div>
+
+                        <div class="card-body">
+                            Discard all changes
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
+
+            <% else %>
+
+              <div class="row">
+                <div class="col">
+                  <pre>
+                    <%= @status %>
+                  </pre>
+                  
+                  <% if @current_branch != "master" %>
+                      Push to GitHub
+                  <% else %>
+                      Push to GitHub
+                  <% end %>
+
+                  Pull from GitHub
+
+                  <p>
+                    The last thing you did was:
+                  </p>
+
+                </div>
+
+                <div class="col">
+                  <ul class="list-group">
+                    <li class="list-group-item list-group-item-success">
+                      New Branch
+                    </li>
+
+                    <li class="list-group-item">
+                      <form action="/git/checkout" method="post">
+                        <input type="text" name="branch_name">
+                        <button>
+                          Create branch
+                        </button>
+                      </form>
+                    </li>
+
+                    <li class="list-group-item list-group-item-info justify-content-between">
+                      Existing branches
+                    <% @branches.each do |branch| %>
+                      <div class="btn-group">
+                        <a href="/git/checkout" class="btn btn-primary btn-sm"> <span><i class="fad fa-repeat"></i></span>  <%= branch %></a>
+
+                        <a href="/git/delete" class="btn btn-warning btn-sm"> <span><i class="far fa-trash-alt"></i></span> <%= branch %></a>
+                      </div>
+                    <% end %>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            <% end %>
           </div>
+        </div>
+      </div>
+    </div>
 
-        <% else %>
-
-          <div class="row">
-            <div class="col">
-              <pre>
-                <%= @status %>
-              </pre>
-              
-              <% if @current_branch != "master" %>
-                  Push to GitHub
-              <% else %>
-                  Push to GitHub
-              <% end %>
-
-              Pull from GitHub
-
-              <p>
-                The last thing you did was:
-              </p>
-
-            </div>
-
-            <div class="col">
-              <ul class="list-group">
-                <li class="list-group-item list-group-item-success">
-                  New Branch
-                </li>
-
-                <li class="list-group-item">
-                  <form action="/git/checkout" method="post">
-                    <input type="text" name="branch_name">
-                    <button>
-                      Create branch
-                    </button>
-                  </form>
-                </li>
-
-                <li class="list-group-item list-group-item-info justify-content-between">
-                  Existing branches
-                <% @branches.each do |branch| %>
-                  <div class="btn-group">
-                    <a href="/git/checkout" class="btn btn-primary btn-sm"> <span><i class="fad fa-repeat"></i></span>  <%= branch %></a>
-
-                    <a href="/git/delete" class="btn btn-warning btn-sm"> <span><i class="far fa-trash-alt"></i></span> <%= branch %></a>
-                  </div>
-                <% end %>
-                </li>
-              </ul>
-            </div>
-          </div>
-        <% end %>
+    <div class="row mb-4">
+      <div class="col">
+        <div class="card">
+          <h2 class="card-header">
+            History
+          </h2>
+          <code class="bg-dark text-white p-3">
+            <% @list.each do |commit| %>
+              <% commit_parts = commit.split "\n" %>
+              <div>
+                <div>
+                  <span class="commit">
+                    <%= commit_parts.first %>
+                  </span>
+                </div>
+                <%= commit_parts.last.gsub("\t", "&emsp;") %>
+              </div>
+            <% end %>
+          </code>
+        </div>
       </div>
     </div>
   </div>
-</div>
-
-<div class="row mb-4">
-  <div class="col">
-    <div class="card">
-      <h2 class="card-header">
-        History
-      </h2>
-      <% @list.each do |commit| %>
-        <% commit_parts = commit.split "\n" %>
-        <%= commit_parts.first %>
-        <%= commit_parts.last.gsub("\t", "&emsp;") %>
-      <% end %>
-    </div>
-  </div>
-</div>
+</body>
+</html>

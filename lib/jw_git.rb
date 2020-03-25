@@ -10,6 +10,7 @@ module JwGit
   class Server < Sinatra::Base
     require 'action_view'
     require 'action_view/helpers'
+    # require 'octicons_helper'
     include ActionView::Helpers::DateHelper
 
     get '/' do
@@ -23,7 +24,7 @@ module JwGit
         sha = commit.sha.slice(0..7)
         commit_date = commit.date
         line = " * " + sha + " - " + commit.date.strftime("%a, %d %b %Y, %H:%M %z") +
-         " (#{time_ago_in_words(commit_date)} ago) " + "\n\t| " + commit.message 
+         " (#{time_ago_in_words(commit_date)} ago) " + "<br>&emsp;| " + commit.message 
         list.push line
       end
       list.join("<br>")
@@ -44,6 +45,14 @@ module JwGit
       @deleted_files = g.status.added.keys
       @untracked_files = g.status.untracked.keys
       @added_files = g.status.deleted.keys
+
+      @statuses = [
+        { name: "Changed Files:", file_list: @changed_files },
+        { name: "Untracked Files:", file_list: @untracked_files },
+        { name: "Deleted Files:", file_list: @deleted_files },
+        { name: "Added Files:", file_list: @added_files }
+      ]
+      
       # TODO shelling out status is different than g.status
       @status = `git status`
       @current_branch = g.branches.select(&:current).first
