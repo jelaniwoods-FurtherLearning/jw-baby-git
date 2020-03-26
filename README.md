@@ -13,6 +13,12 @@ And then execute:
 
     $ bundle install
 
+In a rails app run:
+```bash
+rails g jw_git:install
+```
+Then `rails server` and visit `/git/status`.
+
 Or install it yourself as:
 
     $ gem install jw_git
