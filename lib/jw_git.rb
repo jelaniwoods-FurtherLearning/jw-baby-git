@@ -58,10 +58,13 @@ module JwGit
       @current_branch = g.branches.select(&:current).first
       @diff = g.diff
       @diff = Diff.diff_to_html(g.diff.to_s)
-    
-      @branches = g.branches.map(&:full)
-
+      last_diff = g.diff(g.log[1], "HEAD").to_s + "\n"
+      # @last_diff_html = Diff.last_to_html(last_diff)
+      @last_diff_html = last_diff
+      @branches = g.branches.local.map(&:full)
+      
       logs = g.log
+      @last_commit_message = logs.first.message
       @list = []
       logs.each do |commit|
         sha = commit.sha.slice(0..7)
@@ -97,6 +100,21 @@ module JwGit
       g = Git.open(working_dir)
       name = params[:branch_name]
       g.branch(name).checkout
+      redirect to("/status")
+    end
+
+    post "/push" do
+      working_dir = File.exist?(Dir.pwd + "/.git") ? Dir.pwd : Dir.pwd + "/.."
+      g = Git.open(working_dir)
+      # TODO push to heroku eventually
+      g.push
+      redirect to("/status")
+    end
+
+    post "/pull" do
+      working_dir = File.exist?(Dir.pwd + "/.git") ? Dir.pwd : Dir.pwd + "/.."
+      g = Git.open(working_dir)
+      g.pull
       redirect to("/status")
     end
   end

@@ -34,8 +34,8 @@
             # The line numbers in the output of a git diff match this regex
             numbers = line.scan(/@@ ([-]\d+,\d+\s[+]\d+,\d+) @@/).map(&:join)
             # If left, starting line number is the first one in a split Array
-            start_line = numbers.first.split(" ").first.
-              split(",").first.to_i.abs
+            start_line = numbers[0].split(" ")[0].
+              split(",")[0].to_i.abs
             line_number = start_line + current_line_index
             file_content += "\n"
           end
@@ -67,8 +67,8 @@
             current_line_index = 0
             numbers = line.scan(/@@ ([-]\d+,\d+\s[+]\d+,\d+) @@/).map(&:join)
             # If right, start line is the second in a split Array
-            start_line = numbers.first.split(" ")[1].
-              split(",").first.to_i.abs
+            start_line = numbers[0].split(" ")[1].
+              split(",")[0].to_i.abs
             line_number = start_line + current_line_index
             file_content += "\n"
           end
@@ -81,7 +81,7 @@
     def self.get_last_commit_hash
       # Dir.chdir(Rails.root) do
         log = `git log -1 --oneline`
-        # log.split.first
+        # log.split[0]
       # end
     end
 
@@ -131,7 +131,7 @@
           # The line numbers in the output of a git diff match this regex
           # @@ -61,18 +61,15 @@
           if !line.match?(/@@ ([-]\d+,\d+\s[+]\d+,\d+) @@/)
-            if line.first != "+"
+            if line[0] != "+"
               line.slice!(0)
               file_content += line + "\n"
             end
@@ -153,8 +153,8 @@
         lines = file.split("\n").drop(4)
         lines.each do |line|
           if !line.match?(/@@ ([-]\d+,\d+\s[+]\d+,\d+) @@/)
-            if line.first != "+"
-            elsif line.first == "+"
+            if line[0] != "+"
+            elsif line[0] == "+"
               line.slice!(0)
               file_content += line + "\n"
             end
