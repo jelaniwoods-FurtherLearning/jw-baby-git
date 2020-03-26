@@ -169,21 +169,21 @@
                   
                   <% if @current_branch != "master" %>
                     <form action="/git/push" method="post">
-                      <button type="button" class="btn btn-primary btn-block mb-4" data-html="true" data-toggle="tooltip" data-placement="top" title="<code>git push</code>">
+                      <button type="submit" class="btn btn-primary btn-block mb-4" data-html="true" data-toggle="tooltip" data-placement="top" title="<code>git push</code>">
                         <i class="fas fa-upload mr-1"></i>
                         Push to GitHub
                       </button>
                     </form>
                   <% else %>
                     <form action="/git/push" method="post">
-                      <button type="button" class="btn btn-primary btn-block mb-4" data-html="true" data-toggle="tooltip" data-placement="top" title="<code>git push -u origin <%= @current_branch %></code>">
+                      <button type="submit" class="btn btn-primary btn-block mb-4" data-html="true" data-toggle="tooltip" data-placement="top" title="<code>git push -u origin <%= @current_branch %></code>">
                         <i class="fas fa-upload mr-1"></i>
                         Push to GitHub
                       </button>
                     </form>
                   <% end %>
                     <form action="/git/pull" method="post">
-                      <button type="button" class="btn btn-primary btn-block mb-4" data-html="true" data-toggle="tooltip" data-placement="top" title="<code>git push -u origin <%= @current_branch %></code>">
+                      <button type="submit" class="btn btn-primary btn-block mb-4" data-html="true" data-toggle="tooltip" data-placement="top" title="<code>git push -u origin <%= @current_branch %></code>">
                         <i class="fas fa-download mr-1"></i>
                         Pull from GitHub
                       </button>
@@ -213,18 +213,20 @@
                     </li>
 
                     <li class="list-group-item">
-                      <form action="/git/checkout" method="post">
+                      <form action="/git/branch/checkout" method="post">
                         <div class="form-group">
                           <label for="branch_name">
                             Go ahead, experiment!
                           </label>
                           <input
                             id="branch_name" class="form-control" type="text"
-                            name="branch_name" placeholder="Enter a name for the new branch..."
-                            data-html="true" data-toggle="tooltip" data-placement="top" title="<code>git checkout -b [BRANCH NAME]</code>"  
+                            name="branch_name" placeholder="Enter a name for the new branch..."  
                           >
                         </div>
-                        <button class="btn btn-success btn-block">
+                        <button class="btn btn-success btn-block"
+                          data-html="true" data-toggle="tooltip"
+                          data-placement="top" title="<code>git checkout -b [BRANCH NAME]</code>"
+                        >
                           <i class="fas fa-code-branch mr-1"></i>
                           Create branch
                         </button>
@@ -238,9 +240,16 @@
                         <%= branch %>
                         <div class="btn-group">
                           <!-- TODO method post, pass branch name-->
-                          <a href="/git/checkout" class="btn btn-primary btn-sm"> <span><i class="fas fa-exchange-alt"></i></span></a>
-
-                          <a href="/git/delete" class="btn btn-warning btn-sm"> <span><i class="far fa-trash-alt"></i></span></a>
+                          <form action="/git/branch/checkout" method="post">
+                            <button value="<%= branch %>" name="branch_name" type="submit" class="btn btn-primary btn-sm" data-html="true" data-toggle="tooltip" data-placement="top" title="<code>git checkout <%= branch %></code>">
+                             <i class="fas fa-exchange-alt"></i>
+                            </button>
+                          </form>
+                          <form action="/git/branch/delete" method="delete">
+                            <button type="submit" value="<%= branch %>" name="branch_name" class="btn btn-warning btn-sm" data-html="true" data-toggle="tooltip" data-placement="top" title="<code>git branch -d <%= branch %></code>">
+                             <i class="far fa-trash-alt"></i>
+                            </button>
+                          </form>
                         </div>
                       </li>
                     <% end %>

@@ -10,7 +10,6 @@ module JwGit
   class Server < Sinatra::Base
     require 'action_view'
     require 'action_view/helpers'
-    # require 'octicons_helper'
     include ActionView::Helpers::DateHelper
 
     get '/' do
@@ -95,11 +94,21 @@ module JwGit
       redirect to("/status")
     end
     
-    post "/checkout" do
+    post "/branch/checkout" do
+      working_dir = File.exist?(Dir.pwd + "/.git") ? Dir.pwd : Dir.pwd + "/.."
+      g = Git.open(working_dir)
+      p params
+      puts "-----"
+      name = params[:branch_name]
+      g.branch(name).checkout
+      redirect to("/status")
+    end
+    
+    delete "/branch/delete" do
       working_dir = File.exist?(Dir.pwd + "/.git") ? Dir.pwd : Dir.pwd + "/.."
       g = Git.open(working_dir)
       name = params[:branch_name]
-      g.branch(name).checkout
+      g.branch(branch).delete
       redirect to("/status")
     end
 
