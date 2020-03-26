@@ -97,14 +97,13 @@ module JwGit
     post "/branch/checkout" do
       working_dir = File.exist?(Dir.pwd + "/.git") ? Dir.pwd : Dir.pwd + "/.."
       g = Git.open(working_dir)
-      p params
-      puts "-----"
       name = params[:branch_name]
       g.branch(name).checkout
       redirect to("/status")
     end
     
-    delete "/branch/delete" do
+    # TODO make delete somehow with the links
+    post "/branch/delete" do
       working_dir = File.exist?(Dir.pwd + "/.git") ? Dir.pwd : Dir.pwd + "/.."
       g = Git.open(working_dir)
       name = params[:branch_name]
@@ -115,7 +114,12 @@ module JwGit
     post "/push" do
       working_dir = File.exist?(Dir.pwd + "/.git") ? Dir.pwd : Dir.pwd + "/.."
       g = Git.open(working_dir)
-      # TODO push to heroku eventually
+      # TODO push to heroku eventually, multiple remotes
+      # remote = params[:remote]
+      # unless remote.nil?
+      #   remote = g.remote remote
+      #   g.push remote
+      # end
       g.push
       redirect to("/status")
     end

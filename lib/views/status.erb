@@ -183,7 +183,7 @@
                     </form>
                   <% end %>
                     <form action="/git/pull" method="post">
-                      <button type="submit" class="btn btn-primary btn-block mb-4" data-html="true" data-toggle="tooltip" data-placement="top" title="<code>git push -u origin <%= @current_branch %></code>">
+                      <button type="submit" class="btn btn-primary btn-block mb-4" data-html="true" data-toggle="tooltip" data-placement="top" title="<code>git pull</code>">
                         <i class="fas fa-download mr-1"></i>
                         Pull from GitHub
                       </button>
@@ -245,7 +245,7 @@
                              <i class="fas fa-exchange-alt"></i>
                             </button>
                           </form>
-                          <form action="/git/branch/delete" method="delete">
+                          <form action="/git/branch/delete" method="post">
                             <button type="submit" value="<%= branch %>" name="branch_name" class="btn btn-warning btn-sm" data-html="true" data-toggle="tooltip" data-placement="top" title="<code>git branch -d <%= branch %></code>">
                              <i class="far fa-trash-alt"></i>
                             </button>
