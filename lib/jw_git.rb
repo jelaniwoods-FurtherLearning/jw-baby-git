@@ -70,6 +70,9 @@ module JwGit
       # (HEAD -> jw-non-sweet)
       # TODO show where branches are on different remotes
       # (origin/master, origin/jw-non-sweet, origin/HEAD)
+      # g.branches[:master].gcommit
+      # TODO is there an easier way to get time_ago_in_words?
+      #  since it requires a lot
       logs.each do |commit|
         sha = commit.sha.slice(0..7)
         commit_date = commit.date
@@ -78,7 +81,7 @@ module JwGit
         if sha == head
           line += %Q{(<span class="text-success">HEAD</span> -> #{@current_branch})}
         end
-        line += "\n\t| " + "#{commit.message} - #{commit.author}"
+        line += "\n\t| " + "#{commit.message} - #{commit.author.name}"
         @list.push line
       end
       erb :status
@@ -106,8 +109,15 @@ module JwGit
     post "/branch/checkout" do
       working_dir = File.exist?(Dir.pwd + "/.git") ? Dir.pwd : Dir.pwd + "/.."
       g = Git.open(working_dir)
-      name = params[:branch_name]
-      g.branch(name).checkout
+      name = params[:branch_name].downcase.gsub(" ", "_")
+      commit = params[:commit_hash]
+      branches = g.branches.local.map(&:full)
+      if branches.include?(name) || commit.nil? 
+        g.branch(name).checkout
+      else
+        g.branch(name).checkout
+        g.reset_hard(g.gcommit(commit))
+      end
       redirect to("/status")
     end
     

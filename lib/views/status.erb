@@ -13,44 +13,6 @@
     .commit:hover {
       color: red;
     }
-    
-    .tooltip {
-      position: relative;
-      display: inline-block;
-    }
-
-    .tooltip .tooltiptext {
-      visibility: hidden;
-      width: 140px;
-      background-color: #555;
-      color: #fff;
-      text-align: center;
-      border-radius: 6px;
-      padding: 5px;
-      position: absolute;
-      z-index: 1;
-      bottom: 150%;
-      left: 50%;
-      margin-left: -75px;
-      opacity: 0;
-      transition: opacity 0.3s;
-    }
-
-    .tooltip .tooltiptext::after {
-      content: "";
-      position: absolute;
-      top: 100%;
-      left: 50%;
-      margin-left: -5px;
-      border-width: 5px;
-      border-style: solid;
-      border-color: #555 transparent transparent transparent;
-    }
-
-    .tooltip:hover .tooltiptext {
-      visibility: visible;
-      opacity: 1;
-    }
   </style>
   <title>Git Client</title>
 </head>
@@ -271,7 +233,7 @@
 
           <div class="card-body">
             <p class="lead">Do you want to jump back in time and go down a different path?</p>
-            <form action="">
+            <form action="/git/branch/checkout" method="post">
               <div class="form-group">
                 <label for="commit_hash">Branch off of</label>
                 <input type="text" class="form-control" name="commit_hash" id="commit_hash" placeholder="Enter the sequence of digits preceding the commit (it's &quot;hash&quot;) that you want to branch off of...">
@@ -318,38 +280,24 @@
   </div>
   <script>
 
+    $(function () {
+      $('[data-toggle="tooltip"]').tooltip()
+    })
 
-  $(function () {
-    $('[data-toggle="tooltip"]').tooltip()
-  })
-
-  function copyToClipboard(element) {
-    var $temp = $("<input>");
-    $("body").append($temp);
-    $temp.val($(element).text()).select();
-    document.execCommand("copy");
-    $temp.remove();
-  }
-  function fakeCopyToClipboard(id) {
-  /* Get the text field */
-    var copyText = document.querySelector("input." + id)
-    
-    console.log(copyText)
-    // .textContent
-    /* Select the text field */
-    copyText.select();
-    // copyText.setSelectionRange(0, 99999); /*For mobile devices*/
-
-    /* Copy the text inside the text field */
-    // copyText.value = id
-    console.log("||||||")
-    console.log(copyText.value)
-    document.execCommand("copy");
-    var tooltip = document.getElementsByClassName("tooltiptext")[0];
-    tooltip.innerHTML = "Copied: " + id;
-    /* Alert the copied text */
-    // alert("Copied the text: " + copyText.textContent);
-  }
+    function copyToClipboard(element) {
+      var $temp = $("<input>");
+      let text = $(element).text();
+      $("body").append($temp);
+      $temp.val($(element).text()).select();
+      document.execCommand("copy");
+      
+      $(element).attr("data-original-title", "Copied " + $(element).attr("id") )
+      // $(element).effect("highlight", { color: "lightgreen" });
+      $temp.remove();
+      setTimeout(function(){
+        $(element).attr("data-original-title", "Copy to Clipboard")
+      }, 1500);
+    }
   </script>
 </body>
 </html>
