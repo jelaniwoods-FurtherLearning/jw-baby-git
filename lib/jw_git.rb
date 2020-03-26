@@ -53,8 +53,9 @@ module JwGit
       ]
       
       # TODO shelling out status is different than g.status
-      @status = `git status`
       @current_branch = g.branches.select(&:current).first
+      # g.branch(@current_branch).checkout # maybe?
+      @status = `git status`
       @diff = g.diff
       @diff = Diff.diff_to_html(g.diff.to_s)
       last_diff = g.diff(g.log[1], "HEAD").to_s + "\n"
