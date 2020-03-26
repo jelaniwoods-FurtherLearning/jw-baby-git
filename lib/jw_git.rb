@@ -66,8 +66,8 @@ module JwGit
       @last_commit_message = logs.first.message
       head = g.show.split("\n").first.split[1].slice(0..7)
       @list = []
-      # TODO show where branches are on different remotes
       # (HEAD -> jw-non-sweet)
+      # TODO show where branches are on different remotes
       # (origin/master, origin/jw-non-sweet, origin/HEAD)
       logs.each do |commit|
         sha = commit.sha.slice(0..7)
@@ -75,7 +75,7 @@ module JwGit
         line = " * " + sha + " - " + commit.date.strftime("%a, %d %b %Y, %H:%M %z") +
          " (#{time_ago_in_words(commit_date)}) "
         if sha == head
-          line += "(HEAD -> #{@current_branch}"
+          line += %Q{(<span class="text-success">HEAD</span> -> #{@current_branch})}
         end
         line += "\n\t| " + "#{commit.message} - #{commit.author}"
         @list.push line
