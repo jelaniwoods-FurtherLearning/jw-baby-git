@@ -64,12 +64,20 @@ module JwGit
       
       logs = g.log
       @last_commit_message = logs.first.message
+      head = g.show.split("\n").first.split[1].slice(0..7)
       @list = []
+      # TODO show where branches are on different remotes
+      # (HEAD -> jw-non-sweet)
+      # (origin/master, origin/jw-non-sweet, origin/HEAD)
       logs.each do |commit|
         sha = commit.sha.slice(0..7)
         commit_date = commit.date
         line = " * " + sha + " - " + commit.date.strftime("%a, %d %b %Y, %H:%M %z") +
-         " (#{time_ago_in_words(commit_date)}) " + "\n\t| " + commit.message 
+         " (#{time_ago_in_words(commit_date)}) "
+        if sha == head
+          line += "(HEAD -> #{@current_branch}"
+        end
+        line += "\n\t| " + "#{commit.message} - #{commit.author}"
         @list.push line
       end
       erb :status
@@ -102,12 +110,12 @@ module JwGit
       redirect to("/status")
     end
     
-    # TODO make delete somehow with the links
+    # TODO make delete request somehow with the links
     post "/branch/delete" do
       working_dir = File.exist?(Dir.pwd + "/.git") ? Dir.pwd : Dir.pwd + "/.."
       g = Git.open(working_dir)
       name = params[:branch_name]
-      g.branch(branch).delete
+      g.branch(name).delete
       redirect to("/status")
     end
 
