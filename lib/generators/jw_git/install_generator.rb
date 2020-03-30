@@ -26,7 +26,7 @@ module JwGit
       # append_config
       
       # append_file filename do "\nend"
-      end
+      # end
     end
     
     private 
