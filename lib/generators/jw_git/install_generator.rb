@@ -10,19 +10,22 @@ module JwGit
       end
       
       map '/' do
+        run Rails.application
+      end
       RUBY
 
       filename = "config.ru"
       match_text = "run Rails.application"
 
-      insert_into_file filename, before: match_text do contents
-      end
+      # insert_into_file filename, before: match_text do contents
+      # end
 
-      gsub_file filename, match_text, "\t" + match_text
+      # gsub_file filename, match_text, "\t" + match_text
+      gsub_file filename, match_text, contents
 
-      append_config
+      # append_config
       
-      append_file filename do "\nend"
+      # append_file filename do "\nend"
       end
     end
     
