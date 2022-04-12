@@ -2,6 +2,9 @@ PATH
   remote: .
   specs:
     jw_git (0.1.1)
+      actionview
+      git (~> 1.6.0)
+      sinatra (~> 2.0.8.1)
 
 GEM
   remote: https://rubygems.org/
@@ -31,12 +34,14 @@ GEM
     loofah (2.4.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
-    mini_portile2 (2.4.0)
+    mini_portile2 (2.8.0)
     minitest (5.14.0)
     mustermann (1.1.1)
       ruby2_keywords (~> 0.0.1)
-    nokogiri (1.10.9)
-      mini_portile2 (~> 2.4.0)
+    nokogiri (1.13.4)
+      mini_portile2 (~> 2.8.0)
+      racc (~> 1.4)
+    racc (1.6.0)
     rack (2.2.2)
     rack-protection (2.0.8.1)
       rack
