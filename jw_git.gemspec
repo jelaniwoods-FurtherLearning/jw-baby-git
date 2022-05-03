@@ -24,7 +24,7 @@ Gem::Specification.new do |spec|
     `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
   end
 
-  spec.add_runtime_dependency 'sinatra', '~> 2.0.8.1'
+  spec.add_runtime_dependency 'sinatra', '>= 2.0.8.1', '< 2.2.1.0'
   spec.add_runtime_dependency 'git', '~> 1.6.0'
   spec.add_runtime_dependency 'actionview'
   spec.bindir        = "exe"
